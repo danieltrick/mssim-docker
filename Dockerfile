@@ -50,6 +50,9 @@ RUN install_packages \
 # Copy the built binaries
 COPY --from=build /opt/mssim/bin/tpm2-simulator /usr/bin/
 
+# Copy startup script
+COPY bin/entrypoint.sh /opt/
+
 # Start TPM simulator
-ENTRYPOINT ["/usr/bin/tpm2-simulator"]
+ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["2321"]

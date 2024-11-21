@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: danieltrick/ms-tpm2sim-docker
+          images: danieltrick/mssim-docker
 
       - name: Build and push Docker image
         id: push
@@ -47,8 +47,8 @@ jobs:
     steps:
       - name: Pull and save the Docker image
         run: |
-          docker image pull danieltrick/ms-tpm2sim-docker:${{ github.ref_name }}
-          docker image save danieltrick/ms-tpm2sim-docker:${{ github.ref_name }} | xz -9v > mssim_docker-${{ github.ref_name }}.tar.xz
+          docker image pull danieltrick/mssim-docker:${{ github.ref_name }}
+          docker image save danieltrick/mssim-docker:${{ github.ref_name }} | xz -9v > mssim_docker-${{ github.ref_name }}.tar.xz
 
       - name: Upload image to GitHub release
         uses: Roang-zero1/github-upload-release-artifacts-action@v2
