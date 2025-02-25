@@ -12,5 +12,6 @@ Version history
 
 | **Release** | **Date**   | **Base system**       | **TPM Simulator Version** | **Commit**                                                                                    |
 | ------------| ---------- | --------------------- | ------------------------- |---------------------------------------------------------------------------------------------- |
-| r1          | 2024-11-21 | Debian 12, 2024-11-11 | 1.62.0                    | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
+| r3          | 2025-02-25 | Debian 12, 2025-02-24 | 1.62.0                    | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r2          | 2025-01-20 | Debian 12, 2025-01-13 | 1.62.0                    | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
+| r1          | 2024-11-21 | Debian 12, 2024-11-11 | 1.62.0                    | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
