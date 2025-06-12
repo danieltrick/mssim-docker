@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## r4 - 2025-06-12
+
+### Changed
+- Updated base system to Debian 12.11 (2025-06-10).
+
 ## r3 - 2025-02-25
 
 ### Added
