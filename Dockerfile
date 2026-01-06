@@ -21,20 +21,24 @@ RUN apk add --no-cache \
     linux-headers \
     pkgconf
 
-# Build OpenSSL 3.0 (LTS)
-RUN mkdir -p /tmp/openssl-3.0 \
-    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.18/openssl-3.0.18.tar.gz | tar -C /tmp/openssl-3.0 --strip-components=1 -xzv \
-    && cd /tmp/openssl-3.0 \
+# Build OpenSSL 3.0 (latest version that is currently supported by ms-tpm-20-ref)
+RUN mkdir -p /tmp/openssl-build \
+    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.18/openssl-3.0.18.tar.gz | tar -C /tmp/openssl-build --strip-components=1 -xzv \
+    && cd /tmp/openssl-build \
     && ./config no-tests no-shared -static \
     && make \
-    && make install \
+    && make install_sw \
     && cd - \
-    && rm -vfr /tmp/openssl-3.0
+    && rm -vfr /tmp/openssl-build
+
+# Copy patch file
+COPY patch/no-buffering.diff /tmp/no-buffering.diff
 
 # Build ms-tpm-20-ref
 RUN mkdir -p /tmp/ms-tpm-20-ref/TPMCmd \
     && curl --tlsv1.2 -sSfL https://github.com/microsoft/ms-tpm-20-ref/archive/${MSSIM_COMMIT}.tar.gz | tar -C /tmp/ms-tpm-20-ref --strip-components=1 -xzv \
     && cd /tmp/ms-tpm-20-ref/TPMCmd \
+    && patch -p2 < /tmp/no-buffering.diff \
     && ./bootstrap \
     && PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig ./configure --prefix=/opt/mssim \
     && make \
@@ -46,10 +50,6 @@ RUN mkdir -p /tmp/ms-tpm-20-ref/TPMCmd \
 # Stage #2
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FROM alpine:$ALPINE_VERS
-
-# Install runtime dependencies
-RUN apk add --no-cache \
-    coreutils
 
 # Copy the built binaries
 COPY --from=build /opt/mssim/bin/tpm2-simulator /usr/bin/

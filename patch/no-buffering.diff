@@ -1,0 +1,14 @@
+diff --git a/TPMCmd/Simulator/src/TPMCmds.c b/TPMCmd/Simulator/src/TPMCmds.c
+index be51992..c323c04 100644
+--- a/TPMCmd/Simulator/src/TPMCmds.c
++++ b/TPMCmd/Simulator/src/TPMCmds.c
+@@ -184,6 +184,9 @@ int main(int argc, char* argv[])
+     bool pick_ports  = false;
+     int  PortNum     = DEFAULT_TPM_PORT;
+ 
++    setvbuf(stdout, NULL, _IONBF, 0);
++    setvbuf(stderr, NULL, _IONBF, 0);
++
+     // Parse command line options
+ 
+     if(CmdLineParser_Init(argc, argv, 2))
