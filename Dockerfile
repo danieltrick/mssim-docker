@@ -1,35 +1,42 @@
-# Debian Version
-ARG DEBIAN_VERSION=bookworm-20250610-slim@sha256:e5865e6858dacc255bead044a7f2d0ad8c362433cfaa5acefb670c1edf54dfef
+# Alpine Version
+ARG ALPINE_VERS=3.23.2@sha256:865b95f46d98cf867a156fe4a135ad3fe50d2056aa3f25ed31662dff6da4eb62
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Stage #1
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-FROM debian:$DEBIAN_VERSION AS build
+FROM alpine:$ALPINE_VERS AS build
 
 # MSSIM Version
 ARG MSSIM_COMMIT=ee21db0a941decd3cac67925ea3310873af60ab3
 
-# Provide the 'install_packages' helper script
-COPY bin/install_packages.sh /usr/sbin/install_packages
-
 # Install build dependencies
-RUN install_packages \
+RUN apk add --no-cache \
+    autoconf \
     autoconf-archive \
     automake \
-    build-essential \
-    ca-certificates \
+    bash \
+    build-base \
     curl \
-    gcc \
-    git \
-    libssl-dev \
-    pkg-config
+    libtool \
+    linux-headers \
+    pkgconf
+
+# Build OpenSSL 3.0 (LTS)
+RUN mkdir -p /tmp/openssl-3.0 \
+    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.18/openssl-3.0.18.tar.gz | tar -C /tmp/openssl-3.0 --strip-components=1 -xzv \
+    && cd /tmp/openssl-3.0 \
+    && ./config no-tests no-shared -static \
+    && make \
+    && make install \
+    && cd - \
+    && rm -vfr /tmp/openssl-3.0
 
 # Build ms-tpm-20-ref
 RUN mkdir -p /tmp/ms-tpm-20-ref/TPMCmd \
     && curl --tlsv1.2 -sSfL https://github.com/microsoft/ms-tpm-20-ref/archive/${MSSIM_COMMIT}.tar.gz | tar -C /tmp/ms-tpm-20-ref --strip-components=1 -xzv \
     && cd /tmp/ms-tpm-20-ref/TPMCmd \
     && ./bootstrap \
-    && ./configure --prefix=/opt/mssim \
+    && PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig ./configure --prefix=/opt/mssim \
     && make \
     && make install \
     && cd - \
@@ -38,14 +45,11 @@ RUN mkdir -p /tmp/ms-tpm-20-ref/TPMCmd \
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Stage #2
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-FROM debian:$DEBIAN_VERSION
-
-# Provide the 'install_packages' helper script
-COPY bin/install_packages.sh /usr/sbin/install_packages
+FROM alpine:$ALPINE_VERS
 
 # Install runtime dependencies
-RUN install_packages \
-    libssl3
+RUN apk add --no-cache \
+    coreutils
 
 # Copy the built binaries
 COPY --from=build /opt/mssim/bin/tpm2-simulator /usr/bin/
