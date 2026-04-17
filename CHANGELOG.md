@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## r7 - 2026-04-17
+
+### Changed
+- Updated base system to Alpine 3.23.4 (2026-04-15).
+- Updated the linked OpenSSL version to 3.0.20 (2026-04-07).
+
 ## r6 - 2026-01-29
 
 ### Changed
