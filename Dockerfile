@@ -1,5 +1,5 @@
 # Alpine Version
-ARG ALPINE_VERS=3.23.4@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11
+ARG ALPINE_VERS=3.24.0@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Stage #1
@@ -23,7 +23,7 @@ RUN apk add --no-cache \
 
 # Build OpenSSL 3.0 (latest version that is currently supported by ms-tpm-20-ref)
 RUN mkdir -p /tmp/openssl-build \
-    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.20/openssl-3.0.20.tar.gz | tar -C /tmp/openssl-build --strip-components=1 -xzv \
+    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.21/openssl-3.0.21.tar.gz | tar -C /tmp/openssl-build --strip-components=1 -xzv \
     && cd /tmp/openssl-build \
     && ./config no-tests no-shared -static \
     && make \
