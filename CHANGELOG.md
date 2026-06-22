@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## r9 - 2026-06-22
+
+### Changed
+- Updated base system to Alpine 3.24.1 (2026-06-16).
+
 ## r8 - 2026-06-10
 
 ### Changed

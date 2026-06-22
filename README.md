@@ -15,7 +15,7 @@ Usage
 To start the MS TPM 2.0 simulator via Docker, simply run:
 
 ```sh
-$ docker run -p 127.0.0.1:2321-2322:2321-2322 danieltrick/mssim-docker:r8
+$ docker run -p 127.0.0.1:2321-2322:2321-2322 danieltrick/mssim-docker:r9
 ```
 
 ### TPM 2.0 Software Stack
@@ -54,6 +54,7 @@ Version history
 
 | **Release** | **Date**   | **Base system**            | **MSSIM Version** | **MSSIM Commit**                                                                              |
 | ------------| ---------- | -------------------------- | ----------------- |---------------------------------------------------------------------------------------------- |
+| r9          | 2026-06-22 | Alpine 3.24.1 (2026-06-16) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r8          | 2026-06-10 | Alpine 3.24.0 (2026-06-09) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r7          | 2026-04-17 | Alpine 3.23.4 (2026-04-15) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r6          | 2026-01-29 | Alpine 3.23.3 (2026-01-28) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
