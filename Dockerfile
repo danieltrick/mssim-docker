@@ -33,12 +33,14 @@ RUN mkdir -p /tmp/openssl-build \
 
 # Copy patch file
 COPY patch/no-buffering.diff /tmp/no-buffering.diff
+COPY patch/fixed-seed.diff /tmp/fixed-seed.diff
 
 # Build ms-tpm-20-ref
 RUN mkdir -p /tmp/ms-tpm-20-ref/TPMCmd \
     && curl --tlsv1.2 -sSfL https://github.com/microsoft/ms-tpm-20-ref/archive/${MSSIM_COMMIT}.tar.gz | tar -C /tmp/ms-tpm-20-ref --strip-components=1 -xzv \
     && cd /tmp/ms-tpm-20-ref/TPMCmd \
     && patch -p2 < /tmp/no-buffering.diff \
+    && patch -p2 < /tmp/fixed-seed.diff \
     && ./bootstrap \
     && PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig ./configure --prefix=/opt/mssim \
     && make \
