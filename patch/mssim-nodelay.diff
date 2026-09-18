@@ -1,0 +1,50 @@
+diff --git a/TPMCmd/Simulator/src/TcpServer.c b/TPMCmd/Simulator/src/TcpServer.c
+index 34277ab..7b91f00 100644
+--- a/TPMCmd/Simulator/src/TcpServer.c
++++ b/TPMCmd/Simulator/src/TcpServer.c
+@@ -96,6 +96,17 @@ static int CreateSocket(
+     return 0;
+ }
+ 
++static int setsockopt_nodelay(int sockfd)
++{
++    int flag = 1;
++
++    if (setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag)) < 0) {
++        return -1;
++    }
++
++    return 0;
++}
++
+ //*** PlatformServer()
+ // This function processes incoming platform requests.
+ bool PlatformServer(SOCKET s)
+@@ -274,6 +285,7 @@ DWORD WINAPI PlatformSvcRoutine(LPVOID parms)
+             printf("Accept error.  Error is 0x%x\n", WSAGetLastError());
+             return (DWORD)-1;
+         }
++        setsockopt_nodelay(serverSocket);
+         printf("Client accepted\n");
+ 
+         // normal behavior on client disconnection is to wait for a new client
+@@ -372,6 +384,7 @@ int RegularCommandService(int PortNumber, bool PickPorts)
+             printf("Accept error.  Error is 0x%x\n", WSAGetLastError());
+             return -1;
+         }
++        setsockopt_nodelay(serverSocket);
+         printf("Client accepted\n");
+ 
+         // normal behavior on client disconnection is to wait for a new client
+diff --git a/TPMCmd/Simulator/src/simulator_sysheaders.h b/TPMCmd/Simulator/src/simulator_sysheaders.h
+index 11ca103..9ec3d90 100644
+--- a/TPMCmd/Simulator/src/simulator_sysheaders.h
++++ b/TPMCmd/Simulator/src/simulator_sysheaders.h
+@@ -27,6 +27,7 @@ typedef int socklen_t;
+ #  include <unistd.h>
+ #  include <errno.h>
+ #  include <netinet/in.h>
++#  include <netinet/tcp.h>
+ #  include <sys/socket.h>
+ #  include <pthread.h>
+ // simulate certain windows APIs

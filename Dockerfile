@@ -1,5 +1,5 @@
 # Alpine Version
-ARG ALPINE_VERS=3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
+ARG ALPINE_VERS=3.24.2@sha256:31b6477333eb8257db9e5d7c3a7264fd0467928756f0bbcc27d35bea5d28cdbd
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Stage #1
@@ -23,7 +23,7 @@ RUN apk add --no-cache \
 
 # Build OpenSSL 3.0 (latest version that is currently supported by ms-tpm-20-ref)
 RUN mkdir -p /tmp/openssl-build \
-    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.21/openssl-3.0.21.tar.gz | tar -C /tmp/openssl-build --strip-components=1 -xzv \
+    && curl --tlsv1.2 -sSfL https://github.com/openssl/openssl/releases/download/openssl-3.0.22/openssl-3.0.22.tar.gz | tar -C /tmp/openssl-build --strip-components=1 -xzv \
     && cd /tmp/openssl-build \
     && ./config no-tests no-shared -static \
     && make \
@@ -32,13 +32,14 @@ RUN mkdir -p /tmp/openssl-build \
     && rm -vfr /tmp/openssl-build
 
 # Copy patch file
-COPY patch/no-buffering.diff /tmp/no-buffering.diff
+COPY patch/mssim-nobuffering.diff patch/mssim-nodelay.diff /tmp/
 
 # Build ms-tpm-20-ref
 RUN mkdir -p /tmp/ms-tpm-20-ref/TPMCmd \
     && curl --tlsv1.2 -sSfL https://github.com/microsoft/ms-tpm-20-ref/archive/${MSSIM_COMMIT}.tar.gz | tar -C /tmp/ms-tpm-20-ref --strip-components=1 -xzv \
     && cd /tmp/ms-tpm-20-ref/TPMCmd \
-    && patch -p2 < /tmp/no-buffering.diff \
+    && patch -p2 < /tmp/mssim-nobuffering.diff \
+    && patch -p2 < /tmp/mssim-nodelay.diff \
     && ./bootstrap \
     && PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig ./configure --prefix=/opt/mssim \
     && make \

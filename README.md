@@ -54,6 +54,7 @@ Version history
 
 | **Release** | **Date**   | **Base system**            | **MSSIM Version** | **MSSIM Commit**                                                                              |
 | ------------| ---------- | -------------------------- | ----------------- |---------------------------------------------------------------------------------------------- |
+| r10         | 2026-09-18 | Alpine 3.24.2 (2026-09-17) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r9          | 2026-06-22 | Alpine 3.24.1 (2026-06-16) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r8          | 2026-06-10 | Alpine 3.24.0 (2026-06-09) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |
 | r7          | 2026-04-17 | Alpine 3.23.4 (2026-04-15) | 1.83-r1           | [`ee21db0a941d`](https://github.com/microsoft/ms-tpm-20-ref/commit/ee21db0a941d) (2024-10-04) |

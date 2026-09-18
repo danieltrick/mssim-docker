@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## r10 - 2026-09-18
+
+### Added
+- Added patch to set `TCP_NODELAY` flag for all client connections.
+
+### Changed
+- Updated base system to Alpine 3.24.2 (2026-09-17).
+- Updated the linked OpenSSL version to 3.0.22 (2026-08-25).
+
 ## r9 - 2026-06-22
 
 ### Changed
